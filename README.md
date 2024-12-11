@@ -24,14 +24,14 @@ gdisk /dev/sdX # Partionstabelle und Partionen anlegen
 	n # Root-Partition
 	p # Ergebnis anzeigen
     w # Partitionstabelle schreiben (ACHTUNG: DATENVERLUST)
-cryptsetup --pbkdf pbkdf2 -c aes-xts-plain64 -y -s 512 luksFormat /dev/sdX2
-cryptsetup luksOpen /dev/vda2 cryptlvm
-pvcreate /dev/mapper/cryptlvm
-vgcreate main /dev/mapper/cryptlvm
-lvcreate -L 6G -n swap main
-lvcreate -l 100%FREE -n root main
-mkfs.ext4 /dev/main/root
-mkswap /dev/main/swap
+cryptsetup --pbkdf pbkdf2 -c aes-xts-plain64 -y -s 512 luksFormat /dev/sdX2 # Partition verschlüsseln
+cryptsetup luksOpen /dev/vda2 cryptlvm # Verschlüsselte Partition öffnen und entschlüsseln
+pvcreate /dev/mapper/cryptlvm # Physical Volume erstellen (LVM)
+vgcreate main /dev/mapper/cryptlvm # Volume Group erstellen (LVM)
+lvcreate -L 6G -n swap main # Logical Volume für Swap erstellen (LVM)
+lvcreate -l 100%FREE -n root main # Logical Volume für Root-Partition erstellen (LVM)
+mkfs.ext4 /dev/main/root # Root-Partition formatieren
+mkswap /dev/main/swap # Swap formatieren
 mkfs.fat -F 32 /dev/sdX1 # Fat32 auf Bootpartition
 
 mount /dev/main/root /mnt # Root-Partition mounten
