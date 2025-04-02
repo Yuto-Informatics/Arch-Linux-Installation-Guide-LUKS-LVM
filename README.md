@@ -91,7 +91,7 @@ mkinitcpio -P # initramfs images generieren
 blkid # UUID's anzeigen
 nano /etc/default/grub
     GRUB_ENABLE_CRYPTODISK=y
-    GRUB_CMDLINE_LINUX="cryptdevice=UUID=<UUID>:cryptlvm cryptkey=rootfs:/cryptfiles/cryptomount_keyfile.bin>"
+    GRUB_CMDLINE_LINUX="cryptdevice=UUID=<UUID>:cryptlvm cryptkey=rootfs:/cryptfiles/cryptomount_keyfile.bin"
 
 grub-install --target=x86_64-efi --efi-directory=/boot/efi --bootloader-id=GRUB # Bootloader installieren und ins UEFI eintragen
 grub-mkconfig -o /boot/grub/grub.cfg # Grub-Konfigurationsdatei erstellen
